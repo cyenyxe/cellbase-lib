@@ -416,7 +416,8 @@ public class GenomicVariantEffectHibernateDBAdaptor extends HibernateDBAdaptor i
 		//			
 		//		}else {
 		if (exonFeatureMap.getStrand().equals("-1")) {
-			codonPosition = (exonFeatureMap.getEnd()-variant.getPosition()+1+Integer.parseInt(exonFeatureMap.getExonPhase()))%3;
+//			codonPosition = (exonFeatureMap.getEnd() - variant.getPosition() + 1 + Integer.parseInt(exonFeatureMap.getExonPhase())) % 3;
+			codonPosition = (exonFeatureMap.getEnd() - variant.getPosition() + 1 + Math.max(Integer.parseInt(exonFeatureMap.getExonPhase()), 0)) % 3;
 			if(codonPosition == 1) {
 				sequence = sequenceDbAdaptor.getByRegion(exonFeatureMap.getChromosome(), variant.getPosition() - 2, variant.getPosition());
 			}
@@ -433,7 +434,8 @@ public class GenomicVariantEffectHibernateDBAdaptor extends HibernateDBAdaptor i
 			sequence.setSequence(sequenceDbAdaptor.getRevComp(sequence.getSequence()));
 			alternativeAllele = sequenceDbAdaptor.getRevComp(alternativeAllele);
 		}else{
-			codonPosition = (variant.getPosition()-exonFeatureMap.getStart()+1+Integer.parseInt(exonFeatureMap.getExonPhase()))%3;
+//			codonPosition = (variant.getPosition() - exonFeatureMap.getStart() + 1 + Integer.parseInt(exonFeatureMap.getExonPhase()))%3;
+                        codonPosition = (variant.getPosition() - exonFeatureMap.getStart() + 1 + Math.max(Integer.parseInt(exonFeatureMap.getExonPhase()), 0)) % 3;
 			if (codonPosition == 1){
 				sequence = sequenceDbAdaptor.getByRegion(exonFeatureMap.getChromosome(), variant.getPosition(), variant.getPosition() + 2);
 			}
